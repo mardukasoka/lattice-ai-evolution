@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lattice-ai-evolution.local/schemas/task-ticket.schema.json",
+  "title": "TaskTicket",
+  "type": "object",
+  "required": ["schema_version","ticket_id","task_type","objective","caps","allowed_tools","context_hash"],
+  "properties": {
+    "schema_version":{"const":"0.1"},
+    "ticket_id":{"type":"string","minLength":1},
+    "parent_evidence_hash":{"type":["string","null"]},
+    "branch_commit":{"type":["string","null"]},
+    "task_type":{"type":"string","minLength":1},
+    "objective":{"type":"string","minLength":1},
+    "caps":{"type":"object","required":["max_depth","max_children","max_duration_seconds"],"properties":{
+      "max_depth":{"type":"integer","minimum":0},
+      "max_children":{"type":"integer","minimum":0},
+      "max_descendants":{"type":"integer","minimum":0},
+      "max_duration_seconds":{"type":"integer","minimum":1},
+      "max_cost_usd":{"type":"number","minimum":0}
+    },"additionalProperties":false},
+    "allowed_tools":{"type":"array","items":{"type":"string"},"uniqueItems":true},
+    "context_hash":{"type":"string","minLength":1}
+  },
+  "additionalProperties":false
+}
