@@ -1,0 +1,15 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"ExperimentRecord",
+  "type":"object",
+  "required":["schema_version","experiment_id","ticket_id","status","artifacts","validation"],
+  "properties":{
+    "schema_version":{"const":"0.1"},
+    "experiment_id":{"type":"string"},
+    "ticket_id":{"type":"string"},
+    "status":{"enum":["running","accepted","rejected","failed","inconclusive"]},
+    "artifacts":{"type":"array","items":{"type":"object","required":["path","sha256"],"properties":{"path":{"type":"string"},"sha256":{"type":"string"}}}},
+    "validation":{"type":"object","required":["deterministic_pass"],"properties":{"deterministic_pass":{"type":"boolean"},"held_out_pass":{"type":["boolean","null"]},"notes":{"type":"string"}}},
+    "negative_evidence":{"type":"array","items":{"type":"string"}}
+  }
+}
