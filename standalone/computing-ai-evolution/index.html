@@ -2,11 +2,11 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Computing & AI Evolution Matrix</title>
 <style>
-:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0c1425;color:#eef3ff}*{box-sizing:border-box}body{margin:0;padding:clamp(12px,3vw,32px)}main{max-width:1200px;margin:auto}h1{font-size:clamp(24px,4vw,40px);margin-bottom:6px}p{color:#b5c3da;line-height:1.5}section{background:#142039;border:1px solid #314363;border-radius:14px;padding:16px;margin:16px 0}label{display:block;font-weight:600;margin:8px 0}select,input{width:100%;padding:11px;border:1px solid #526584;border-radius:8px;background:#0c1425;color:#fff;font:inherit}.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.chart{width:100%;height:auto;min-height:280px;display:block}table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid #314363;padding:10px;font-size:14px}th{color:#a6c5f6}.scroll{overflow-x:auto}button{cursor:pointer;background:#203b65;color:#fff;border:1px solid #6288c0;border-radius:8px;padding:7px 10px}button:focus-visible{outline:3px solid #f3c86c}.muted{font-size:13px;color:#a8b8d1}.legend{display:flex;gap:14px;flex-wrap:wrap}.legend span:before{content:'● ';color:var(--c)}
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0c1425;color:#eef3ff}*{box-sizing:border-box}body{margin:0;padding:clamp(12px,3vw,32px)}main{max-width:1200px;margin:auto}h1{font-size:clamp(24px,4vw,40px);margin-bottom:6px}p{color:#b5c3da;line-height:1.5}section{background:#142039;border:1px solid #314363;border-radius:14px;padding:16px;margin:16px 0}label{display:block;font-weight:600;margin:8px 0}select,input{width:100%;padding:11px;border:1px solid #526584;border-radius:8px;background:#0c1425;color:#fff;font:inherit}.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.chart{width:100%;height:auto;min-height:280px;display:block;cursor:grab;user-select:none}table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid #314363;padding:10px;font-size:14px}th{color:#a6c5f6}.scroll{overflow-x:auto}button{cursor:pointer;background:#203b65;color:#fff;border:1px solid #6288c0;border-radius:8px;padding:7px 10px}button:focus-visible{outline:3px solid #f3c86c}.muted{font-size:13px;color:#a8b8d1}.legend{display:flex;gap:14px;flex-wrap:wrap}.legend span:before{content:'● ';color:var(--c)}
 </style></head><body><main><header><h1>Computing & AI Evolution Matrix</h1><p>Independent research atlas of historical computing, interfaces, simulation, embodiment and fictional AI. This page is intentionally unlinked from the main website.</p></header>
 <section><div class="controls"><div><label for="family">Y · Technology family</label><select id="family"><option value="all">All families</option></select></div><div><label for="kind">Evidence class</label><select id="kind"><option value="all">All classes</option><option>Historical</option><option>Real</option><option>Fictional</option><option>Speculative</option></select></div><div><label for="time">T · Latest year: <output id="year">2100</output></label><input id="time" type="range" min="-3500" max="2100" step="10" value="2100"></div><div><label for="search">Search catalogue</label><input id="search" type="search" placeholder="Computer, technology, character…"></div></div>
 <p class="muted">X = intelligence class (0 non-AI; 1 narrow AI; 2 AGI; 3 ASI; 4 transcendent; 5 cosmic; 6 godlike). Y = technology family. Z = branch-specific development stage (0–5). T = historical date or fictional publication/debut date. Ratings are illustrative, not measured intelligence. RSI is recorded separately, not treated as an intelligence tier.</p>
-<svg class="chart" id="chart" viewBox="0 0 960 560" role="img" aria-label="Projected three-dimensional scatter plot of intelligence, technology families and technological maturity"><g id="grid"></g><g id="dots"></g><g id="labels"></g></svg>
+<p class="muted"><strong>Manipulate the 3D matrix:</strong> drag or swipe to rotate · scroll or pinch to zoom · double-click to reset · select a dot for details.</p><svg class="chart" id="chart" viewBox="0 0 960 560" role="img" aria-label="Projected three-dimensional scatter plot of intelligence, technology families and technological maturity"><g id="grid"></g><g id="dots"></g><g id="labels"></g></svg>
 <div class="legend"><span style="--c:#72c9f8">Historical</span><span style="--c:#69d9ae">Real</span><span style="--c:#e4a4f7">Fictional</span><span style="--c:#f3c46d">Speculative</span></div><p id="detail" aria-live="polite">Select a plotted point to inspect its record.</p></section>
 <section><h2>Catalogue <span id="count"></span></h2><div class="scroll"><table><thead><tr><th>Record</th><th>Family</th><th>X</th><th>Z</th><th>Year</th><th>Class</th></tr></thead><tbody id="rows"></tbody></table></div><p class="muted">Curated starter dataset, not yet an exhaustive history. Ancient dates are approximate. Fictional dates refer to first appearances, not in-universe chronology. A high Z is maturity within a branch, not superiority across branches.</p></section></main>
 <script>
@@ -25,19 +25,72 @@ const records=[
 ['DNA computing',10,0,2,1994,'Real'],['Organoid computing',10,0,3,2023,'Real'],['Biohybrid robot',10,0,4,2020,'Real'],
 ['MEMS',11,0,2,1980,'Real'],['Nanosensor',11,0,3,2000,'Real'],['Molecular machine',11,0,4,2016,'Real'],
 ['Electrical grid computing',12,0,2,1940,'Historical'],['Battery-powered mobile computing',12,0,3,1980,'Real'],['Hyperscale data centre',12,0,4,2010,'Real'],
-['HAL 9000',4,2,5,1968,'Fictional'],['Data (Star Trek)',5,2,5,1987,'Fictional'],['Skynet',9,3,5,1984,'Fictional'],['The Machine',9,3,5,2011,'Fictional'],['GAIA (Horizon)',8,3,5,2017,'Fictional'],['Deep Thought',4,3,5,1979,'Fictional'],['Culture Minds',9,4,5,1987,'Fictional'],['VALIS',0,5,5,1981,'Fictional'],['Logopolis collective',0,5,5,1981,'Fictional'],['Cosmic AC',4,5,5,1956,'Fictional']
+['HAL 9000',4,2,5,1968,'Fictional'],['Data (Star Trek)',5,2,5,1987,'Fictional'],['Skynet',9,3,5,1984,'Fictional'],['The Machine',9,3,5,2011,'Fictional'],['GAIA (Horizon)',8,3,5,2017,'Fictional'],['Deep Thought',4,3,5,1979,'Fictional'],['Culture Minds',9,4,5,1987,'Fictional'],['VALIS',0,5,5,1981,'Fictional'],['Logopolis collective',0,5,5,1981,'Fictional'],['Cosmic AC',4,5,5,1956,'Fictional'],
+["K9 (Doctor Who)",7,2,4,1977,'Fictional'],
+["TARDIS Matrix (Doctor Who)",4,3,5,1963,'Fictional'],
+["Xoanon (The Face of Evil)",4,2,5,1977,'Fictional'],
+["BOSS (The Green Death)",4,2,4,1973,'Fictional'],
+["WOTAN (The War Machines)",4,2,4,1966,'Fictional'],
+["The Great Intelligence (Doctor Who)",9,3,5,1967,'Fictional'],
+["Cybermen collective (Doctor Who)",9,2,5,1966,'Fictional'],
+["Dalek Pathweb (Doctor Who)",9,2,5,2012,'Fictional'],
+["Dalek Emperor (Doctor Who)",9,2,5,1967,'Fictional'],
+["The Oracle (Underworld)",4,2,4,1978,'Fictional'],
+["The Library CAL (Doctor Who)",4,2,5,2008,'Fictional'],
+["Satellite Five computer (Doctor Who)",9,1,5,2005,'Fictional'],
+["The Cyber-Controller (Doctor Who)",9,2,5,1967,'Fictional'],
+["The Cyber-Planner (Doctor Who)",4,2,5,1967,'Fictional'],
+["Handles (Doctor Who)",7,2,4,2013,'Fictional'],
+["The Handbots (Doctor Who)",7,1,4,2011,'Fictional'],
+["The Clockwork Droids (Doctor Who)",7,1,4,2006,'Fictional'],
+["The Smilers (Doctor Who)",7,1,4,2010,'Fictional'],
+["The Krotons (Doctor Who)",7,2,4,1968,'Fictional'],
+["The Robots of Death (Doctor Who)",7,1,4,1977,'Fictional'],
+["The War Machines (Doctor Who)",7,1,3,1966,'Fictional'],
+["The Mechanoids (Doctor Who)",7,1,3,1965,'Fictional'],
+["The Movellans (Doctor Who)",7,2,4,1979,'Fictional'],
+["The Cyberiad (Doctor Who)",9,3,5,2013,'Fictional'],
+["The Moment (Doctor Who)",4,3,5,2013,'Fictional'],
+["The Doctor's confession dial (Doctor Who)",8,1,5,2015,'Fictional'],
+["The Testimony system (Doctor Who)",8,2,5,2017,'Fictional'],
+["The Gangers (Doctor Who)",10,1,4,2011,'Fictional'],
+["The Flesh (Doctor Who)",10,0,4,2011,'Fictional'],
+["The Vardies (Doctor Who)",7,1,5,2017,'Fictional'],
+["The Emojibots (Doctor Who)",7,1,4,2017,'Fictional'],
+["The Kerblam! system (Doctor Who)",9,2,5,2018,'Fictional'],
+["The Matrix of Gallifrey (Doctor Who)",3,2,5,1976,'Fictional'],
+["The Master's CyberMasters (Doctor Who)",7,2,5,2020,'Fictional']
 ];
 const colors={Historical:'#72c9f8',Real:'#69d9ae',Fictional:'#e4a4f7',Speculative:'#f3c46d'};
 const fam=document.querySelector('#family'),kind=document.querySelector('#kind'),time=document.querySelector('#time'),search=document.querySelector('#search'),grid=document.querySelector('#grid'),dots=document.querySelector('#dots'),labels=document.querySelector('#labels'),rows=document.querySelector('#rows'),detail=document.querySelector('#detail');
 families.forEach((v,i)=>fam.add(new Option(v,String(i))));
-function project(x,y,z){return [110+x*89+y*15,448-y*17-z*52+x*4]}
+let yaw=-0.55,pitch=0.40,zoom=1,dragging=false,lastX=0,lastY=0;
+const chart=document.querySelector('#chart');
+chart.style.touchAction='none';
+function project(x,y,z){
+ const xx=(x-3)*78, yy=(y-6)*27, zz=(z-2.5)*68;
+ const a=xx*Math.cos(yaw)-yy*Math.sin(yaw), b=xx*Math.sin(yaw)+yy*Math.cos(yaw);
+ const v=b*Math.cos(pitch)-zz*Math.sin(pitch), w=b*Math.sin(pitch)+zz*Math.cos(pitch);
+ return [480+a*zoom,275+v*zoom,w];
+}
+chart.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;chart.setPointerCapture(e.pointerId)});
+chart.addEventListener('pointermove',e=>{if(!dragging)return;yaw+=(e.clientX-lastX)*0.008;pitch=Math.max(-1.5,Math.min(1.5,pitch+(e.clientY-lastY)*0.008));lastX=e.clientX;lastY=e.clientY;draw()});
+chart.addEventListener('pointerup',()=>dragging=false);
+chart.addEventListener('pointercancel',()=>dragging=false);
+chart.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.45,Math.min(2.4,zoom*(e.deltaY>0?.9:1.1)));draw()},{passive:false});
+chart.addEventListener('dblclick',()=>{yaw=-.55;pitch=.4;zoom=1;draw()});
+let pinch=null;
+chart.addEventListener('touchmove',e=>{if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(pinch)zoom=Math.max(.45,Math.min(2.4,zoom*d/pinch));pinch=d;draw()}},{passive:true});
+chart.addEventListener('touchend',()=>pinch=null);
 function el(tag,attrs,txt){const n=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(txt)n.textContent=txt;return n}
 function line(a,b,color='#435774',width=1){grid.append(el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:color,'stroke-width':width}))}
+function drawAxes(){grid.replaceChildren();labels.replaceChildren();
 for(let x=0;x<=6;x++)line(project(x,0,0),project(x,12,0));
 for(let y=0;y<=12;y++)line(project(0,y,0),project(6,y,0));
 for(let z=0;z<=5;z++)line(project(0,0,z),project(0,12,z));
 line(project(0,0,0),project(6,0,0),'#72c9f8',3);line(project(0,0,0),project(0,12,0),'#e4a4f7',3);line(project(0,0,0),project(0,0,5),'#69d9ae',3);
 [['X · Intelligence',project(6,0,0)],['Y · Technology families',project(0,12,0)],['Z · Evolution',project(0,0,5)]].forEach(([t,p])=>labels.append(el('text',{x:p[0],y:p[1]-12,fill:'#eaf1ff','font-size':17},t)));
-function draw(){const max=+time.value;document.querySelector('#year').textContent=max<0?Math.abs(max)+' BCE':max;dots.replaceChildren();rows.replaceChildren();const q=search.value.toLowerCase();const filtered=records.filter(r=>(fam.value==='all'||+fam.value===r[1])&&(kind.value==='all'||kind.value===r[5])&&r[4]<=max&&(r[0]+' '+families[r[1]]).toLowerCase().includes(q));document.querySelector('#count').textContent='('+filtered.length+' / '+records.length+')';filtered.forEach(r=>{const [name,y,x,z,year,type]=r;const [cx,cy]=project(x,y,z);const c=el('circle',{cx,cy,r:6,fill:colors[type],stroke:'#0b1425','stroke-width':2,tabindex:0,role:'button','aria-label':name});const show=()=>detail.textContent=name+' · '+families[y]+' · X '+x+' · Z '+z+' · '+(year<0?Math.abs(year)+' BCE':year)+' · '+type;c.addEventListener('click',show);c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show()}});c.append(el('title',{},name));dots.append(c);const tr=document.createElement('tr');[name,families[y],x,z,year<0?Math.abs(year)+' BCE':year,type].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td)});rows.append(tr)})}
+}
+function draw(){drawAxes();const max=+time.value;document.querySelector('#year').textContent=max<0?Math.abs(max)+' BCE':max;dots.replaceChildren();rows.replaceChildren();const q=search.value.toLowerCase();const filtered=records.filter(r=>(fam.value==='all'||+fam.value===r[1])&&(kind.value==='all'||kind.value===r[5])&&r[4]<=max&&(r[0]+' '+families[r[1]]).toLowerCase().includes(q));document.querySelector('#count').textContent='('+filtered.length+' / '+records.length+')';filtered.sort((a,b)=>project(a[2],a[1],a[3])[2]-project(b[2],b[1],b[3])[2]).forEach(r=>{const [name,y,x,z,year,type]=r;const [cx,cy]=project(x,y,z);const c=el('circle',{cx,cy,r:6,fill:colors[type],stroke:'#0b1425','stroke-width':2,tabindex:0,role:'button','aria-label':name});const show=()=>detail.textContent=name+' · '+families[y]+' · X '+x+' · Z '+z+' · '+(year<0?Math.abs(year)+' BCE':year)+' · '+type;c.addEventListener('click',show);c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show()}});c.append(el('title',{},name));dots.append(c);const tr=document.createElement('tr');[name,families[y],x,z,year<0?Math.abs(year)+' BCE':year,type].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td)});rows.append(tr)})}
 [fam,kind,time,search].forEach(e=>e.addEventListener('input',draw));draw();
 </script></body></html>
